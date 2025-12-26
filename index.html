@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Instagram Profiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      color: #111;
+    }
+
+    header {
+      padding: 16px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      z-index: 10;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .list {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .card:active {
+      transform: scale(0.98);
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ddd;
+      flex-shrink: 0;
+    }
+
+    .username {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .empty {
+      padding: 30px;
+      text-align: center;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Instagram Profiles</h1>
+  <input type="text" id="search" placeholder="Search by username…" />
+</header>
+
+<div class="list" id="list"></div>
+
+<script>
+  const rawUsernames = [
+    "sundaysarthak",
+    "genzwayofficial",
+    "genzwayreels",
+    "tarunkediaa",
+    "maxtern",
+    "niharikachoudharyyy",
+    "jist.news",
+    "nitishrajpute",
+    "mukul.singh.chauhan",
+    "peekinghuman",
+    "peektv_in",
+    "peek.pods",
+    "pureeconomics",
+    "keshavuvaach",
+    "pureecon",
+    "keshavuvach",
+    "professorofhow",
+    "sonalmehrotrakapoor"
+  ];
+
+  const usernames = [...new Set(
+    rawUsernames.map(u => u.toLowerCase().trim())
+  )].sort();
+
+  const listEl = document.getElementById("list");
+  const searchEl = document.getElementById("search");
+
+  function render(filter = "") {
+    listEl.innerHTML = "";
+
+    const filtered = usernames.filter(u =>
+      u.includes(filter.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = `<div class="empty">No profiles found</div>`;
+      return;
+    }
+
+    filtered.forEach(username => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.onclick = () => {
+        window.open(`https://instagram.com/${username}`, "_blank");
+      };
+
+      card.innerHTML = `
+        <img
+          class="avatar"
+          src="https://unavatar.io/instagram/${username}"
+          onerror="this.src='https://unavatar.io/avatar/${username}'"
+        />
+        <div class="username">@${username}</div>
+      `;
+
+      listEl.appendChild(card);
+    });
+  }
+
+  searchEl.addEventListener("input", e => {
+    render(e.target.value);
+  });
+
+  render();
+</script>
+
+</body>
+</html>
